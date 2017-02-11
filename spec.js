@@ -26,7 +26,7 @@ module.exports = {
             default: 8888
         },
         apiKey: {
-            description: 'our Google Maps API key',
+            description: 'our Google Maps API key'm
             required: false
         },
         debug: {
@@ -40,11 +40,11 @@ module.exports = {
         }
     },
     test: {
-        loggerLevel: 'info',
+        loggerLevel: 'debug',
         debug: true
     },
     development: {
-        loggerLevel: 'info',
+        loggerLevel: 'debug',
         debug: true
     }
 }

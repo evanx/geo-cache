@@ -14,17 +14,12 @@
   "author": "Evan Summers",
   "license": "ISC",
   "dependencies": {
-    "app-spec": "^0.3.0",
     "bluebird": "^3.4.6",
     "cli-color": "^1.1.0",
-    "koa": "^2.0.0-alpha.7",
-    "koa-bodyparser": "^3.2.0",
-    "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
     "multi-exec-async": "^0.2.0",
     "node-fetch": "^1.6.3",
-    "redis": "^2.6.4",
-    "redis-koa-app-rpf": "^0.2.1",
+    "redis-koa-app-rpf": "^0.5.0",
     "redis-logger-rpf": "^0.2.0"
   },
   "devDependencies": {
