@@ -68,10 +68,9 @@ docker run --name gcache-redis -d \
 
 ```
 redisContainer=`docker ps -q -f name=gcache-redis`   
-redisHost=`
-  docker inspect \
-    -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
-    $redisContainer`
+redisHost=`docker inspect \
+  -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+  $redisContainer`
 echo $redisHost
 ```
 
