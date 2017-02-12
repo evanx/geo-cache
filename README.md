@@ -3,7 +3,7 @@
 
 Redis-based caching proxy for Google Maps API queries.
 
-<img src="https://raw.githubusercontent.com/evanx/geo-cache/master/docs/readme/main.png"/>
+<img src="https://raw.githubusercontent.com/evanx/geo-cache/master/docs/readme/main2.png"/>
 
 ## Use case
 
