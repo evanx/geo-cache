@@ -242,7 +242,7 @@ Naturally we put successfully fetched content into our Redis cache:
             });
         }
 ```
-where only `OK` and `ZERO_RESULTS` responses are cached, and `ZERO_RESULTS` uses `shortExpireSeconds` for a shorter expiry e.g. 3 days rather than 21 days.
+where only `OK` and `ZERO_RESULTS` responses are cached. In the case of `ZERO_RESULTS` we use `shortExpireSeconds` for a shorter expiry e.g. 3 days rather than 21 days.
 
 ### Analytics
 
