@@ -19,7 +19,7 @@
     "lodash": "^4.17.4",
     "multi-exec-async": "^0.2.0",
     "node-fetch": "^1.6.3",
-    "redis-koa-app-rpf": "^0.5.2",
+    "redis-koa-app-rpf": "^0.5.3",
     "redis-logger-rpf": "^0.2.0",
     "render-html-rpf": "^0.1.2"
   },
