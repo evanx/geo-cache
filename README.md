@@ -229,15 +229,20 @@ Naturally we put successfully fetched content into our Redis cache:
         const formattedContent = JSON.stringify(fetchedContent, null, 2) + '\n';
         ctx.set('Content-Type', 'application/json');
         ctx.body = formattedContent;
-        if (fetchedContent.status !== 'OK') {
-            logger.debug('status', fetchContent.status, url);
+        if (!lodash.includes(['OK', 'ZERO_RESULTS'], fetchedContent.status)) {
+            logger.debug('status', fetchedContent.status, url);
         } else {
+            const expireSeconds = lodash.includes(['ZERO_RESULTS'], fetchedContent.status)?
+            config.shortExpireSeconds:
+            config.expireSeconds;
+            logger.debug('expireSeconds', expireSeconds, fetchedContent.status, url);
             await multiExecAsync(client, multi => {
-                multi.setex(cacheKey, config.expireSeconds, formattedContent);
+                multi.setex(cacheKey, expireSeconds, formattedContent);
                 multi.hincrby([config.redisNamespace, 'set:path:count:h'].join(':'), path, 1);
             });
         }
 ```
+where only `OK` and `ZERO_RESULTS` responses are cached, and `ZERO_RESULTS` uses `shortExpireSeconds` for a shorter expiry e.g. 3 days rather than 21 days.
 
 ### Analytics
 
