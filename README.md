@@ -193,6 +193,7 @@ We hash the URL and query:
         const [cachedContent] = await multiExecAsync(client, multi => {
             multi.get(cacheKey);
             multi.expire(cacheKey, config.expireSeconds);
+            multi.hincrby([config.redisNamespace, 'get:path:count:h'].join(':'), path, 1);
         });
 ```
 where we reset the expiry when hit.
@@ -222,8 +223,23 @@ Naturally we put successfully fetched content into our Redis cache:
         } else {
             await multiExecAsync(client, multi => {
                 multi.setex(cacheKey, config.expireSeconds, formattedContent);
+                multi.hincrby([config.redisNamespace, 'set:path:count:h'].join(':'), path, 1);
             });
         }
+```
+
+### Analytics
+
+```javascript
+api.get('/metrics', async ctx => {
+    ctx.set('Content-Type', 'application/json');
+    const [getCount, setCount] = await multiExecAsync(client, multi => {
+        multi.hgetall([config.redisNamespace, 'get:path:count:h'].join(':'));
+        multi.hgetall([config.redisNamespace, 'set:path:count:h'].join(':'));
+    });
+    const stats = {getCount, setCount};
+    ctx.body = JSON.stringify(stats, null, 2);
+});
 ```
 
 ### Appication archetype
