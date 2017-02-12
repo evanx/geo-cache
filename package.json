@@ -21,7 +21,7 @@
     "node-fetch": "^1.6.3",
     "redis-koa-app-rpf": "^0.5.0",
     "redis-logger-rpf": "^0.2.0",
-    "render-html-rpf": "^0.1.0"
+    "render-html-rpf": "^0.1.2"
   },
   "devDependencies": {
     "eslint": "^3.12.2"
