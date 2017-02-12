@@ -166,7 +166,7 @@ module.exports = {
     }
 }
 ```
-where the `shortExpireSeconds` is used to cache `ZERO_RESULTS` responses for a shorter time e.g. 3 days rather than 21 days.
+where `shortExpireSeconds` is used to cache `ZERO_RESULTS` responses for a shorter time e.g. 3 days rather than 21 days.
 
 ## Implementation
 
