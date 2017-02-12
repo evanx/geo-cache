@@ -221,7 +221,7 @@ If not found in the Redis cache, then we fetch:
             return;
         }
 ```
-where for a the live request to `googleapis.com` where use the `authQuery` which includes the `key` sent in the request. However, we ensure we do not store or log `authQuery` but rather `query` from which the `key` has been deleted, as shown further above.
+where for the actual fetch request to `googleapis.com` where use the `authQuery` which includes the `key` sent in the request. However, we ensure we do not store or log `authQuery` but rather `query` from which the `key` has been deleted, as shown further above.
 
 Naturally we put successfully fetched content into our Redis cache:
 ```javascript
