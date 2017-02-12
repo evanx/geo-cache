@@ -13,14 +13,14 @@ We require a local proxy to cache requests to Google Maps API into Redis.
 
 We use the same path and query as per Google Maps API e.g.:
 ```
-$ curl 'http://localhost:8888/maps/api/geocode/json' \
+$ curl 'http://localhost:8851/maps/api/geocode/json' \
   -G --data-urlencode 'address=Waitrose, Witney, Oxfordshire, UK' |
   grep formatted | sed 's/^\s*//'
 ```
 ```
 "formatted_address": "The Woolgate Centre, Woolgate Centre, 25 Market Square, Witney OX28 6AR, UK",  
 ```
-where this service is running on port `8888`
+where this service is running on port `8851`
 
 ## Installation
 
@@ -150,7 +150,7 @@ module.exports = {
         },
         httpPort: {
             description: 'the HTTP port',
-            default: 8888
+            default: 8851
         },
         loggerLevel: {
             description: 'the logging level',

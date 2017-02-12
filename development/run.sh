@@ -16,8 +16,8 @@ ls -l tmp/keys.sh
   echo 'client sleep'
   sleep 1
   echo 'client curl'
-  curl 'http://localhost:8888/maps/api/geocode/json' -G --data-urlencode 'address=20 Falstaff Close, Eynsham OX29 4QA'
-  redis-cli keys cache-geo-cache:* 
+  curl 'http://localhost:8851/maps/api/geocode/json' -G --data-urlencode 'address=20 Falstaff Close, Eynsham OX29 4QA'
+  redis-cli keys cache-geo-cache:*
 ) &
 
 echo 'start server'
