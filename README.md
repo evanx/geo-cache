@@ -248,10 +248,12 @@ where only `OK` and `ZERO_RESULTS` responses are cached. In the case of `ZERO_RE
 
 ```javascript
 api.get('/metrics', async ctx => {
-    const [getCount, setCount] = await multiExecAsync(client, multi => {
+    const [getCountRes, setCountRes] = await multiExecAsync(client, multi => {
         multi.hgetall([config.redisNamespace, 'get:path:count:h'].join(':'));
         multi.hgetall([config.redisNamespace, 'set:path:count:h'].join(':'));
     });
+    const getCount = reduceAllProperties(getCountRes, value => parseInt(value));
+    const setCount = reduceAllProperties(setCountRes, value => parseInt(value));
     const metrics = {getCount, setCount};
     if (/(Mobile)/.test(ctx.get('user-agent'))) {
         ctx.body = h.page({
