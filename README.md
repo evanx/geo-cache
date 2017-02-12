@@ -252,8 +252,8 @@ api.get('/metrics', async ctx => {
         multi.hgetall([config.redisNamespace, 'get:path:count:h'].join(':'));
         multi.hgetall([config.redisNamespace, 'set:path:count:h'].join(':'));
     });
-    const getCount = reduceAllProperties(getCountRes, value => parseInt(value));
-    const setCount = reduceAllProperties(setCountRes, value => parseInt(value));
+    const getCount = reduceAllProperties(getCountRes || {}, value => parseInt(value));
+    const setCount = reduceAllProperties(setCountRes || {}, value => parseInt(value));
     const metrics = {getCount, setCount};
     if (/(Mobile)/.test(ctx.get('user-agent'))) {
         ctx.body = h.page({
