@@ -163,35 +163,48 @@ module.exports = {
 
 See `lib/main.js` https://github.com/evanx/geo-cache/blob/master/lib/main.js
 ```javascript
-module.exports = async ({config, logger, client, app, api}) => {
+module.exports = async appx => {
+    const {config, logger, client, api} = appx;
+    logger.info('config', {config});
     api.get('/maps/api/*', async ctx => {
         const path = ctx.params[0];
         const url = 'https://maps.googleapis.com/maps/api/' + path;
-        const sha = crypto.createHash('sha1').update(url).digest('hex');
-        const cacheKey = [config.redisNamespace, sha, 'content:json'].join(':');
+        const query = Object.assign({}, ctx.query);
+        const authQuery = Object.assign({}, {key: config.apiKey}, ctx.query);
+        if (!authQuery.key) {
+            ctx.statusCode = 401;
+            const statusText = 'Unauthorized';
+            ctx.body = statusText + '\n';
+            return;
+        }
+        delete query.key;
+        ...
+    });
+}
+```
+where `query` excludes the Google API `key`
+
+We hash the URL and query:
+```javascript        
+        const sha = crypto.createHash('sha1').update(
+            [url, JSON.stringify(query)].join('#')
+        ).digest('hex');
+        const cacheKey = [config.redisNamespace, sha, 'json'].join(':');
         const [cachedContent] = await multiExecAsync(client, multi => {
             multi.get(cacheKey);
             multi.expire(cacheKey, config.expireSeconds);
         });
-        if (cachedContent) {
-            ctx.set('Content-Type', 'application/json');
-            ctx.body = JSON.stringify(JSON.parse(cachedContent), null, 2);
-            return;
-        }
-        ...
-    });
-}
 ```
 where we reset the expiry when hit.
 
 If not found in the Redis cache, then we fetch:
 ```javascript
-        const query = Object.assign({}, ctx.query, {key: config.apiKey});
-        const urlQuery = url + '?' + Object.keys(query)
-        .map(key => [key, encodeURIComponent(query[key])].join('='))
+        const urlQuery = url + '?' + Object.keys(authQuery)
+        .map(key => [key, encodeURIComponent(authQuery[key])].join('='))
         .join('&');
         const res = await fetch(urlQuery);
         if (res.status !== 200) {
+            logger.debug('statusCode', url, res.status, res.statusText, query);
             ctx.statusCode = res.status;
             ctx.body = res.statusText + '\n';
             return;
@@ -200,13 +213,17 @@ If not found in the Redis cache, then we fetch:
 
 Naturally we put successfully fetched content into our Redis cache:
 ```javascript
-        const fetchedContent = await res.text();
-        const formattedContent = JSON.stringify(JSON.parse(fetchedContent), null, 2);
+        const fetchedContent = await res.json();
+        const formattedContent = JSON.stringify(fetchedContent, null, 2) + '\n';
         ctx.set('Content-Type', 'application/json');
         ctx.body = formattedContent;
-        await multiExecAsync(client, multi => {
-            multi.setex(cacheKey, config.expireSeconds, formattedContent);
-        });
+        if (fetchedContent.status !== 'OK') {
+            logger.debug('status', fetchContent.status, url);
+        } else {
+            await multiExecAsync(client, multi => {
+                multi.setex(cacheKey, config.expireSeconds, formattedContent);
+            });
+        }
 ```
 
 ### Appication archetype
