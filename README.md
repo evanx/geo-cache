@@ -109,13 +109,17 @@ where keys are named using the SHA of the request path and query.
 
 We can inspect JSON content:
 ```
-$ redis-cli get cache-geo-cache:64bdaff72bfc67deb55326022371ffef3ace9c7b:json | jq '.' | grep status
+redis-cli get cache-geo-cache:64bdaff72bfc67deb55326022371ffef3ace9c7b:json | jq '.' | grep status
+```
+```
   "status": "OK",
 ```
 
 Check the TTL:
 ```
-$ redis-cli ttl cache-geo-cache:64bdaff72bfc67deb55326022371ffef3ace9c7b:json
+redis-cli ttl cache-geo-cache:64bdaff72bfc67deb55326022371ffef3ace9c7b:json
+```
+```
 (integer) 1814352
 ```
 
