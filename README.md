@@ -37,12 +37,53 @@ ADD lib lib
 CMD ["node", "--harmony", "lib/index.js"]
 ```
 
+We might simply run with `--network=host` i.e. using our host's Redis:
 ```
-docker run --network=host -e apiKey=$MAPS_API_KEY -d geo-cache
+docker run --network=host --restart unless-stopped -d \
+  -e apiKey=$MAPS_API_KEY \
+  -e httpPort=8851 \
+  geo-cache
 ```
-where we must provide our `apiKey` for the Google Maps API.
+where we optionally provide our `apiKey` for the Google Maps API e.g. from the environment as `MAPS_API_KEY`
 
-For example, it might be set in the environment as `MAPS_API_KEY`
+### Isolation
+
+However it is preferrable from a security point of view to run using an isolated network and Redis container:
+```
+docker network create gcache
+```
+```
+docker run --name gcache-redis --network=gcache -d redis
+```
+Or with persistent volume from the host:
+```
+docker rm -f gcache-redis
+docker run --name gcache-redis -d \
+  --network gcache \
+  -v ~/volumes/gcache-data:/data \
+  redis redis-server --appendonly yes
+```
+
+```
+redisContainer=`docker ps -q -f name=gcache-redis`   
+redisHost=`
+  docker inspect \
+    -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    $redisContainer
+`
+echo $redisHost
+```
+
+```
+docker run \
+  --name gcache \
+  --network=gcache \
+  --restart unless-stopped -d \
+  -e apiKey=$MAPS_API_KEY \
+  -e httpPort=8851 \
+  -e redisHost=$redisHost \
+  geo-cache
+```
 
 ### git clone
 
