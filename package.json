@@ -1,6 +1,6 @@
 {
   "name": "geo-cache",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Redis-based caching proxy for Google Maps API queries.",
   "main": "src/index.js",
   "scripts": {
