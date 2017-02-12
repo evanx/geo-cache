@@ -150,6 +150,10 @@ module.exports = {
             description: 'the TTL for the cached content',
             default: 21*24*3600
         },
+        shortExpireSeconds: {
+            description: 'the TTL for the cached content',
+            default: 3*24*3600
+        },
         httpPort: {
             description: 'the HTTP port',
             default: 8851
@@ -162,6 +166,7 @@ module.exports = {
     }
 }
 ```
+where the `shortExpireSeconds` is used to cache `ZERO_RESULTS` responses for a shorter time e.g. 3 days rather than 21 days.
 
 ## Implementation
 
