@@ -248,15 +248,29 @@ where only `OK` and `ZERO_RESULTS` responses are cached. In the case of `ZERO_RE
 
 ```javascript
 api.get('/metrics', async ctx => {
-    ctx.set('Content-Type', 'application/json');
     const [getCount, setCount] = await multiExecAsync(client, multi => {
         multi.hgetall([config.redisNamespace, 'get:path:count:h'].join(':'));
         multi.hgetall([config.redisNamespace, 'set:path:count:h'].join(':'));
     });
-    const stats = {getCount, setCount};
-    ctx.body = JSON.stringify(stats, null, 2);
+    const metrics = {getCount, setCount};
+    if (/(Mobile)/.test(ctx.get('user-agent'))) {
+        ctx.body = h.page({
+            title: 'gcache',
+            heading: 'Metrics',
+            content: [{
+                name: 'pre',
+                content: JSON.stringify(metrics, null, 2)}
+            ],
+            footerLink: 'https://github.com/evanx/geo-cache'
+        });
+    } else {
+        ctx.body = metrics;
+    }
 });
 ```
+where for Mobile browsers we format the metrics in HTML. In our desktop browser, we typically have JSON formatter extension installed, and so can view JSON responses. But that is not the case on mobile, and perhaps we want to manually monitor the metrics on our mobile phone.
+
+Incidently, we use a related module for basic HTML formatting: https://github.com/evanx/render-html-rpf
 
 ### Appication archetype
 
