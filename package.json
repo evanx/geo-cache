@@ -1,26 +1,21 @@
 {
   "name": "geo-cache",
-  "version": "0.4.2",
+  "version": "0.4.5",
   "description": "Redis-based caching proxy for Google Maps API queries.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "lint": "eslint --cache src",
-    "development": "NODE_ENV=development node --harmony lib/index.js",
-    "test": "NODE_ENV=test node --harmony lib/index.js",
-    "tmp": "NODE_ENV=development node --harmony tmp/index.js",
-    "start": "node --harmony lib/index.js",
-    "pm2start-8851": "httpPort=8851 pm2 start lib/index.js --node-args='--harmony' --name `basename $PWD`"
+    "start": "node --harmony lib/index.js"
   },
-  "author": "Evan Summers",
+  "author": "@evanxsummers",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "cli-color": "^1.1.0",
+    "app-bin": "^0.1.0",
     "lodash": "^4.17.4",
+    "map-properties": "^0.1.2",
     "multi-exec-async": "^0.2.0",
     "node-fetch": "^1.6.3",
-    "redis-koa-app-rpf": "^0.5.7",
-    "redis-logger-rpf": "^0.2.0",
+    "redis-koa-app-rpf": "^0.6.16",
     "render-html-rpf": "^0.1.2"
   },
   "devDependencies": {
@@ -28,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evanx/geo-cache.git"
+    "url": "https://github.com/evanx/geo-cache.git"
   },
   "bugs": {
     "url": "https://github.com/evanx/geo-cache/issues"
