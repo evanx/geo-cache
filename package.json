@@ -14,7 +14,7 @@
     "lodash": "^4.17.14",
     "map-properties": "^0.1.2",
     "multi-exec-async": "^0.2.0",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.6.1",
     "redis-koa-app-rpf": "^0.6.16",
     "render-html-rpf": "^0.1.2"
   },
