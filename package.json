@@ -14,12 +14,12 @@
     "lodash": "^4.17.14",
     "map-properties": "^0.1.2",
     "multi-exec-async": "^0.2.0",
-    "node-fetch": "^1.6.3",
-    "redis-koa-app-rpf": "^0.6.16",
+    "node-fetch": "^3.2.0",
+    "redis-koa-app-rpf": "^0.4.1",
     "render-html-rpf": "^0.1.2"
   },
   "devDependencies": {
-    "eslint": "^6.0.1"
+    "eslint": "^8.7.0"
   },
   "repository": {
     "type": "git",
